@@ -43,6 +43,7 @@ public class EyeMessage {
     }
 
     public void setDisplayPane(GridPane displayGrid) {
+
         for (int lineIndex = 0; lineIndex < this.data.size(); lineIndex++) {
             ArrayList<Integer> line = this.data.get(lineIndex);
             displayGrid.addRow(lineIndex);

@@ -47,8 +47,7 @@
       </SplitPane>
       <ToolBar layoutY="8.0" prefHeight="39.0" prefWidth="796.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <Button mnemonicParsing="false" text="Export to string" />
-            <SplitMenuButton fx:id="eyeMessageOptions" mnemonicParsing="false" text="Add Message" />
+            <MenuButton fx:id="eyeMessageOptions" mnemonicParsing="false" text="Select Eye Message" />
             <Pane HBox.hgrow="ALWAYS" />
             <ColorPicker />
         </items>

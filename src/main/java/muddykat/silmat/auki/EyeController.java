@@ -13,7 +13,7 @@ public class EyeController {
     private Button trigrams;
 
     @FXML
-    private SplitMenuButton eyeMessageOptions;
+    private MenuButton eyeMessageOptions;
 
     @FXML
     private SplitPane displaySplitPane;
@@ -29,29 +29,33 @@ public class EyeController {
     @FXML
     GridPane displayGrid;
 
-    private EyeMessage selectedMessage = null;
-
     @FXML
     public void initialize() {
         trigrams.setOnAction(event -> {
             System.out.println("Testing");
         });
 
+        setupEyeMessageButton();
+
+    }
+
+    private void setupEyeMessageButton(){
         for (EyeMessages e : EyeMessages.values()) {
             MenuItem messageItem = new MenuItem(e.name());
+
             messageItem.setOnAction(event -> {
-                eyeMessageOptions.setText("Add Message: " + e.name());
-                selectedMessage = e.getMessage();
+                displayGrid.getChildren().clear();
+                eyeRawText.setText(e.getMessage().getRawString());
+                e.getMessage().setDisplayPane(displayGrid);
+                eyeMessageOptions.setText("Selected: " + e.name());
             });
 
             eyeMessageOptions.getItems().add(messageItem);
         }
 
-        eyeMessageOptions.setOnAction(event -> {
-            eyeRawText.setText(selectedMessage.getRawString());
-            selectedMessage.setDisplayPane(displayGrid);
 
-        });
+
     }
+
 
 }
