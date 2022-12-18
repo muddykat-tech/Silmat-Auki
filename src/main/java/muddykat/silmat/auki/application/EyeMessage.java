@@ -47,6 +47,7 @@ public class EyeMessage {
         for (int lineIndex = 0; lineIndex < this.data.size(); lineIndex++) {
             ArrayList<Integer> line = this.data.get(lineIndex);
             displayGrid.addRow(lineIndex);
+
             for (int symbolIndex = 0; symbolIndex < line.size(); symbolIndex++) {
                 displayGrid.addColumn(symbolIndex);
                 Integer symbol = line.get(symbolIndex);

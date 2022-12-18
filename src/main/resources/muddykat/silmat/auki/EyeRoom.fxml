@@ -14,23 +14,47 @@
    <children>
       <ToolBar layoutY="552.0" prefHeight="56.0" prefWidth="801.0" style="-fx-background-color: lightblue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <items>
+            <MenuButton fx:id="btnCipher" mnemonicParsing="false" text="Ciphers" />
             <Button fx:id="trigrams" mnemonicParsing="false" text="Trigrams" />
             <Button mnemonicParsing="false" text="Frequency Analysis" />
             <Button mnemonicParsing="false" text="PAM5" />
-            <Button mnemonicParsing="false" text="Ciphers" />
             <Button mnemonicParsing="false" text="Bit Packing" />
             <Button mnemonicParsing="false" text="Compression" />
+            <Button mnemonicParsing="false" text="Isomorph Production" />
         </items>
       </ToolBar>
-      <SplitPane fx:id="displaySplitPane" dividerPositions="0.5" layoutY="40.0" orientation="VERTICAL" prefHeight="508.0" prefWidth="801.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+      <SplitPane fx:id="displaySplitPane" dividerPositions="0.5849802371541502" layoutY="40.0" orientation="VERTICAL" prefHeight="508.0" prefWidth="801.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane fx:id="splitTop" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TextArea fx:id="eyeRawText" layoutY="3.0" prefHeight="250.0" prefWidth="794.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0">
-                     <font>
-                        <Font name="Consolas" size="12.0" />
-                     </font>
-                  </TextArea>
+                  <SplitPane dividerPositions="0.49747474747474746" layoutY="-4.0" prefHeight="259.0" prefWidth="794.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <AnchorPane prefHeight="17.0" prefWidth="391.0" AnchorPane.bottomAnchor="277.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="6.0">
+                                 <children>
+                                    <Label layoutX="8.0" text="Raw" />
+                                 </children>
+                              </AnchorPane>
+                              <TextArea fx:id="eyeRawText" layoutY="26.0" prefHeight="274.0" prefWidth="401.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="26.0">
+                                 <font>
+                                    <Font name="Consolas" size="12.0" />
+                                 </font>
+                              </TextArea>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="25.0" prefWidth="100.0">
+                           <children>
+                              <AnchorPane prefHeight="25.0" prefWidth="395.0" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="11.0" layoutY="4.0" text="Output" AnchorPane.topAnchor="4.0" />
+                                 </children>
+                              </AnchorPane>
+                              <TextArea fx:id="outputTextPane" layoutY="25.0" prefHeight="274.0" prefWidth="395.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="26.0" />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
                </children></AnchorPane>
           <AnchorPane fx:id="splitBottom" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
@@ -48,6 +72,8 @@
       <ToolBar layoutY="8.0" prefHeight="39.0" prefWidth="796.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <MenuButton fx:id="eyeMessageOptions" mnemonicParsing="false" text="Select Eye Message" />
+            <ToggleButton fx:id="overlayEyes" mnemonicParsing="false" text="Overlay Mode" />
+            <Button fx:id="updateEyeGraphics" mnemonicParsing="false" text="Update Eyes" />
             <Pane HBox.hgrow="ALWAYS" />
             <ColorPicker />
         </items>
