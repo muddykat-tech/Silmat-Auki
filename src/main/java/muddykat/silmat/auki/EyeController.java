@@ -10,36 +10,33 @@ import muddykat.silmat.auki.modules.CipherModule;
 
 public class EyeController {
 
+    //Should these be private, probably.
     @FXML
-    private Button trigrams;
-
+    ToggleButton trigrams;
     @FXML
-    private MenuButton eyeMessageOptions;
-
+    MenuButton eyeMessageOptions;
     @FXML
-    private SplitPane displaySplitPane;
-
+    SplitPane displaySplitPane;
     @FXML
     AnchorPane splitTop;
     @FXML
     AnchorPane splitBottom;
-
     @FXML
     TextArea eyeRawText;
-
     @FXML
     GridPane displayGrid;
-
     @FXML
     Button updateEyeGraphics;
-
     @FXML
     TextArea outputTextPane;
     @FXML
     MenuButton btnCipher;
-
     @FXML
     ToggleButton overlayEyes;
+    @FXML
+    TextField keyInput;
+    @FXML
+    Button outputToInput;
 
     @FXML
     public void initialize() {
@@ -49,41 +46,31 @@ public class EyeController {
 
     private void initializeModules(){
         CipherModule cipherModule = new CipherModule();
-        cipherModule.initializeButtons(eyeRawText, btnCipher, outputTextPane);
+        cipherModule.initializeButtons(eyeRawText, btnCipher, outputTextPane, keyInput);
 
     }
 
     private void initializeUI(){
-
-        trigrams.setOnAction(event -> {
-            System.out.println("Testing");
-        });
-
         setupEyeMessageButton();
-
-
     }
 
     private static boolean overlayMode = false;
     private void setupEyeMessageButton(){
+        setupOutputShift();
+        setupOverlayMode();
+        setupEyeSelection();
 
-        overlayEyes.setOnAction(event -> {
-            overlayMode = overlayEyes.isSelected();
-            if (!overlayEyes.isSelected()){
-                displayGrid.getChildren().clear();
-            }
-        });
-
-
+    }
+    private void setupEyeSelection(){
         for (EyeMessages e : EyeMessages.values()) {
             MenuItem messageItem = new MenuItem(e.name());
 
             messageItem.setOnAction(event -> {
                 if(!overlayMode) {
-                    displayGrid.getChildren().clear();
+                    splitBottom.getChildren().clear();
                 }
                 eyeRawText.setText(e.getMessage().getRawString());
-                e.getMessage().setDisplayPane(displayGrid);
+                e.getMessage().setDisplayPane(splitBottom);
                 eyeMessageOptions.setText("Selected: " + e.name());
             });
 
@@ -92,17 +79,33 @@ public class EyeController {
 
         updateEyeGraphics.setOnAction(event -> {
             if(!overlayMode) {
-                displayGrid.getChildren().clear();
+                splitBottom.getChildren().clear();
             }
             eyeMessageOptions.setText("Selected: CUSTOM");
             String rawText = eyeRawText.getText().replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "");
             EyeMessage custom = new EyeMessage(rawText);
-            custom.setDisplayPane(displayGrid);
+            custom.setDisplayPane(splitBottom);
         });
-
-
-
     }
 
+    private void setupOverlayMode(){
+        overlayEyes.setOnAction(event -> {
+            overlayMode = overlayEyes.isSelected();
+            if (!overlayEyes.isSelected()){
+                displayGrid.getChildren().clear();
+            }
+        });
+    }
+
+    private void setupOutputShift(){
+        outputToInput.setOnAction(event -> {
+            String output = outputTextPane.getText();
+            eyeRawText.setText(output);
+            outputTextPane.clear();
+        });
+    }
+    private void setupTrigrams(){
+
+    }
 
 }

@@ -3,6 +3,7 @@ package muddykat.silmat.auki.application;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import muddykat.silmat.auki.util.EyeUtil;
 
@@ -42,17 +43,16 @@ public class EyeMessage {
         return builder.toString();
     }
 
-    public void setDisplayPane(GridPane displayGrid) {
+    public void setDisplayPane(AnchorPane testPane) { //GridPane displayGrid
 
         for (int lineIndex = 0; lineIndex < this.data.size(); lineIndex++) {
             ArrayList<Integer> line = this.data.get(lineIndex);
-            displayGrid.addRow(lineIndex);
-
             for (int symbolIndex = 0; symbolIndex < line.size(); symbolIndex++) {
-                displayGrid.addColumn(symbolIndex);
                 Integer symbol = line.get(symbolIndex);
                 ImageView view = new ImageView(EyeUtil.getImageFromIndex(symbol));
-                displayGrid.add(view, symbolIndex, lineIndex);
+                view.setX((symbolIndex * 27) + (lineIndex % 2 == 1 ? 13 : 0));
+                view.setY(lineIndex * 19);
+                testPane.getChildren().add(view);
             }
         }
     }
