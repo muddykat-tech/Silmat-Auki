@@ -1,12 +1,8 @@
 package muddykat.silmat.auki.modules;
 
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
 import muddykat.silmat.auki.util.VigenereCipher;
-
-import java.util.ArrayList;
 
 public class CipherModule {
 
@@ -27,11 +23,11 @@ public class CipherModule {
 
         btnDecrypt.setOnAction(event -> {
             switch(selectedCipher){
-                case vingenere -> {
+                case vingenere: {
                     String input = inputText.getText();
                     outputTextPane.setText(VigenereCipher.decrypt(input, key.getText()));
                 }
-                case test_case -> {
+                case none: {
                     //Testing
                     System.out.println("Testing");
                 }
@@ -40,11 +36,11 @@ public class CipherModule {
 
         btnEncrypt.setOnAction(event -> {
             switch(selectedCipher){
-                case vingenere -> {
+                case vingenere: {
                     String input = inputText.getText();
                     outputTextPane.setText(VigenereCipher.encrypt(input, key.getText()));
                 }
-                case test_case -> {
+                case none: {
                     //Testing
                     System.out.println("Testing");
                 }
@@ -56,7 +52,7 @@ public class CipherModule {
 }
 enum Ciphers {
     vingenere(true),
-    test_case(false);
+    none(false);
 
     final boolean requiresKey;
     Ciphers(boolean keyRequired){

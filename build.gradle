@@ -55,6 +55,15 @@ jlink {
     }
 }
 
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
+                'Main-Class': 'muddykat.silmat.auki.EyeApplication'
+        )
+    }
+}
+
 jlinkZip {
     group = 'distribution'
 }

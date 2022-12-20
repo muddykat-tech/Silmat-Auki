@@ -50,7 +50,7 @@ public class EyeMessage {
             for (int symbolIndex = 0; symbolIndex < line.size(); symbolIndex++) {
                 Integer symbol = line.get(symbolIndex);
                 ImageView view = new ImageView(EyeUtil.getImageFromIndex(symbol));
-                view.setX((symbolIndex * 26) + (lineIndex % 2 == 1 ? 13 : 0));
+                view.setX((symbolIndex * 24) + (lineIndex % 2 == 1 ? 12 : 0));
                 view.setY(lineIndex * 16);
                 testPane.getChildren().add(view);
             }

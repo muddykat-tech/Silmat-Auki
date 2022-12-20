@@ -18,13 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static muddykat.silmat.auki.util.EyeUtil.getResource;
-
-
 public class EyeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         initialize(stage);
-
         InputStream iconIS = getResource(getClass(), "icon.png");
         Image image = new Image(iconIS);
         stage.getIcons().add(image);
@@ -34,22 +31,11 @@ public class EyeApplication extends Application {
     private void initialize(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         InputStream fxmlStream = getResource(getClass(), "EyeRoom.fxml");
-
         AnchorPane root = (AnchorPane) loader.load(fxmlStream);
-
-        setupButtons();
-
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Silmat Auki");
-        setupButtons();
+        stage.setTitle("Silmat Auki - V0.2.1");
     }
-
-    private void setupButtons(){
-
-    }
-
-
     public static void main(String[] args) {
         launch();
     }
