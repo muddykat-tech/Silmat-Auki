@@ -50,6 +50,8 @@
                                     <Label layoutX="7.0" layoutY="10.0" text="Output" AnchorPane.leftAnchor="7.0" />
                                     <TextField fx:id="keyInput" layoutX="262.0" layoutY="6.0" prefHeight="4.0" prefWidth="119.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="6.0" />
                                     <Label layoutX="236.0" layoutY="10.0" text="Key" AnchorPane.rightAnchor="139.0" AnchorPane.topAnchor="10.0" />
+                                    <Button fx:id="btnEncrypt" layoutX="58.0" layoutY="6.0" mnemonicParsing="false" text="Encrypt" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="58.0" AnchorPane.topAnchor="6.0" />
+                                    <Button fx:id="btnDecrypt" layoutX="124.0" layoutY="6.0" mnemonicParsing="false" text="Decrypt" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="124.0" AnchorPane.topAnchor="6.0" />
                                  </children>
                               </AnchorPane>
                               <TextArea fx:id="outputTextPane" layoutY="35.0" prefHeight="266.0" prefWidth="401.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="34.0" />
@@ -58,17 +60,7 @@
                     </items>
                   </SplitPane>
                </children></AnchorPane>
-          <AnchorPane fx:id="splitBottom" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <GridPane fx:id="displayGrid" nodeOrientation="LEFT_TO_RIGHT" prefHeight="250.0" prefWidth="794.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="NEVER" minWidth="25.0" prefWidth="25.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="20.0" prefHeight="20.0" vgrow="NEVER" />
-                    </rowConstraints>
-                  </GridPane>
-               </children></AnchorPane>
+          <AnchorPane fx:id="splitBottom" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
         </items>
       </SplitPane>
       <ToolBar layoutY="8.0" prefHeight="39.0" prefWidth="796.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

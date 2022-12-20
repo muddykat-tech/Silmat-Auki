@@ -39,6 +39,12 @@ public class EyeController {
     Button outputToInput;
 
     @FXML
+    Button btnEncrypt;
+
+    @FXML
+    Button btnDecrypt;
+
+    @FXML
     public void initialize() {
         initializeUI();
         initializeModules();
@@ -46,7 +52,7 @@ public class EyeController {
 
     private void initializeModules(){
         CipherModule cipherModule = new CipherModule();
-        cipherModule.initializeButtons(eyeRawText, btnCipher, outputTextPane, keyInput);
+        cipherModule.initializeButtons(eyeRawText, btnCipher, outputTextPane, keyInput, btnEncrypt, btnDecrypt);
 
     }
 

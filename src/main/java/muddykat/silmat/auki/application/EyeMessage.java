@@ -43,7 +43,7 @@ public class EyeMessage {
         return builder.toString();
     }
 
-    public void setDisplayPane(AnchorPane testPane) { //GridPane displayGrid
+    public void setDisplayPane(AnchorPane testPane) {
 
         for (int lineIndex = 0; lineIndex < this.data.size(); lineIndex++) {
             ArrayList<Integer> line = this.data.get(lineIndex);
