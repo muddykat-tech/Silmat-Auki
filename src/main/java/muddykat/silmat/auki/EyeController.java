@@ -2,11 +2,14 @@ package muddykat.silmat.auki;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import muddykat.silmat.auki.application.EyeMessage;
 import muddykat.silmat.auki.application.EyeMessages;
 import muddykat.silmat.auki.modules.CipherModule;
+
+import java.math.MathContext;
 
 public class EyeController {
 
@@ -50,10 +53,26 @@ public class EyeController {
         initializeModules();
     }
 
+    double mouse_anchor_x, mouse_anchor_y;
+
     private void initializeModules(){
         CipherModule cipherModule = new CipherModule();
         cipherModule.initializeButtons(eyeRawText, btnCipher, outputTextPane, keyInput, btnEncrypt, btnDecrypt);
 
+        splitBottom.setOnMousePressed(event -> {
+            mouse_anchor_x = event.getX();
+            mouse_anchor_y = event.getY() + (splitBottom.getHeight() * 1.2);
+        });
+
+        splitBottom.setOnMouseDragged(event ->
+        {
+            splitBottom.getChildren().forEach((x) -> {
+                if(x instanceof ImageView view){
+                    view.setLayoutX(event.getSceneX() - mouse_anchor_x);
+                    view.setLayoutY(event.getSceneY() - mouse_anchor_y);
+                }
+            });
+        });
     }
 
     private void initializeUI(){
@@ -110,8 +129,8 @@ public class EyeController {
             outputTextPane.clear();
         });
     }
+
     private void setupTrigrams(){
 
     }
-
 }
