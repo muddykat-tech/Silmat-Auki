@@ -58,7 +58,23 @@ public class EyeController {
     private void initializeModules(){
         CipherModule cipherModule = new CipherModule();
         cipherModule.initializeButtons(eyeRawText, btnCipher, outputTextPane, keyInput, btnEncrypt, btnDecrypt);
+    }
 
+    private void initializeUI(){
+        setupEyeMessageButton();
+    }
+
+    private static boolean overlayMode = false;
+    private void setupEyeMessageButton(){
+        setupOutputShift();
+        setupOverlayMode();
+        setupEyeSelection();
+        setupDragDrop();
+    }
+
+    private void setupDragDrop() {
+        // Very dirty, has strange initial click behaviour, but works well enough.
+        // TODO: fix bug when using overlay mode
         splitBottom.setOnMousePressed(event -> {
             mouse_anchor_x = event.getX();
             mouse_anchor_y = event.getY() + (splitBottom.getHeight() * 1.2);
@@ -75,17 +91,6 @@ public class EyeController {
         });
     }
 
-    private void initializeUI(){
-        setupEyeMessageButton();
-    }
-
-    private static boolean overlayMode = false;
-    private void setupEyeMessageButton(){
-        setupOutputShift();
-        setupOverlayMode();
-        setupEyeSelection();
-
-    }
     private void setupEyeSelection(){
         for (EyeMessages e : EyeMessages.values()) {
             MenuItem messageItem = new MenuItem(e.name());
