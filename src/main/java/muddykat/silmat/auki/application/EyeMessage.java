@@ -46,6 +46,16 @@ public class EyeMessage {
 
         return builder.toString();
     }
+    static ArrayList<Color> colors = new ArrayList<>();
+    static {
+        colors.add(Color.RED);
+        colors.add(Color.BLUE);
+        colors.add(Color.GREEN);
+        colors.add(Color.YELLOW);
+        colors.add(Color.DARKORANGE);
+        colors.add(Color.AQUA);
+    }
+
 
     public void setDisplayPane(AnchorPane displayPane, double posX, double posY, ToggleButton trigrams) {
         for (int lineIndex = 0; lineIndex < this.data.size(); lineIndex++) {
@@ -64,15 +74,8 @@ public class EyeMessage {
                             trigram.setScaleX(1);
                             trigram.setScaleY(symbolIndex % 2 == 1 ? 1 : -1);
                             ColorAdjust colorAdjust = new ColorAdjust();
-                            ArrayList<Color> colors = new ArrayList<>();
-                            colors.add(Color.RED);
-                            colors.add(Color.BLUE);
-                            colors.add(Color.GREEN);
-                            colors.add(Color.YELLOW);
-                            colors.add(Color.DARKORANGE);
-                            colors.add(Color.AQUA);
                             Color color = colors.get((symbolIndex + lineIndex) % colors.size());
-                            colorAdjust.setHue(color.getHue() / 180);
+                            colorAdjust.setHue(color.getHue() / 180.0);
                             colorAdjust.setSaturation(-1 + (color.getSaturation() * 2));
 
                             trigram.setEffect(colorAdjust);
