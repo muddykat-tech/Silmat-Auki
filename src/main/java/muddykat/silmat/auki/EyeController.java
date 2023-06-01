@@ -5,9 +5,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import muddykat.silmat.auki.application.EyeMessage;
 import muddykat.silmat.auki.application.EyeMessages;
 import muddykat.silmat.auki.modules.CipherModule;
+import muddykat.silmat.auki.util.EyeMode;
 
 import java.math.MathContext;
 
@@ -48,6 +50,19 @@ public class EyeController {
     Button btnDecrypt;
 
     @FXML
+    Button homomorphicOperation;
+
+    @FXML
+    public void switchToOperation() {
+        EyeApplication.selectedMode = EyeMode.OPERATION;
+        try {
+            EyeApplication.reloadScene();
+        } catch (Exception exception){
+            System.out.println("Error:" + exception.getMessage());
+        }
+    }
+
+    @FXML
     public void initialize() {
         initializeUI();
         initializeModules();
@@ -72,6 +87,9 @@ public class EyeController {
         setupDragDrop();
     }
 
+    private double posX = 0.0;
+    private double posY = 0.0;
+
     private void setupDragDrop() {
         // Very dirty, has strange initial click behaviour, but works well enough.
         // TODO: fix bug when using overlay mode
@@ -84,8 +102,10 @@ public class EyeController {
         {
             splitBottom.getChildren().forEach((x) -> {
                 if(x instanceof ImageView view){
-                    view.setLayoutX(event.getSceneX() - mouse_anchor_x);
-                    view.setLayoutY(event.getSceneY() - mouse_anchor_y);
+                    posX = event.getSceneX() - mouse_anchor_x;
+                    posY = event.getSceneY() - mouse_anchor_y;
+                    view.setLayoutX(posX);
+                    view.setLayoutY(posY);
                 }
             });
         });
@@ -100,7 +120,7 @@ public class EyeController {
                     splitBottom.getChildren().clear();
                 }
                 eyeRawText.setText(e.getMessage().getRawString());
-                e.getMessage().setDisplayPane(splitBottom);
+                e.getMessage().setDisplayPane(splitBottom, posX, posY);
                 eyeMessageOptions.setText("Selected: " + e.name());
             });
 
@@ -114,7 +134,7 @@ public class EyeController {
             eyeMessageOptions.setText("Selected: CUSTOM");
             String rawText = eyeRawText.getText().replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "");
             EyeMessage custom = new EyeMessage(rawText);
-            custom.setDisplayPane(splitBottom);
+            custom.setDisplayPane(splitBottom, posX, posY);
         });
     }
 
@@ -122,7 +142,8 @@ public class EyeController {
         overlayEyes.setOnAction(event -> {
             overlayMode = overlayEyes.isSelected();
             if (!overlayEyes.isSelected()){
-                displayGrid.getChildren().clear();
+                if(displayGrid.getChildren() != null)
+                    displayGrid.getChildren().clear();
             }
         });
     }

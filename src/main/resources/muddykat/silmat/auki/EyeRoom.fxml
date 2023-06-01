@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="597.0" prefWidth="796.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="muddykat.silmat.auki.EyeController">
+<AnchorPane prefHeight="597.0" prefWidth="796.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="muddykat.silmat.auki.EyeController">
    <children>
       <ToolBar layoutY="552.0" prefHeight="56.0" prefWidth="801.0" style="-fx-background-color: lightblue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <items>
@@ -20,9 +24,10 @@
             <Button mnemonicParsing="false" text="Bit Packing" />
             <Button mnemonicParsing="false" text="Compression" />
             <Button mnemonicParsing="false" text="Isomorph Production" />
+            <Button id="homomorphicOperation" fx:id="homomorphicOperation" mnemonicParsing="false" onAction="#switchToOperation" text="Homomorphic Operation" />
         </items>
       </ToolBar>
-      <SplitPane fx:id="displaySplitPane" dividerPositions="0.5849802371541502" layoutY="40.0" orientation="VERTICAL" prefHeight="508.0" prefWidth="801.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+      <SplitPane fx:id="displaySplitPane" dividerPositions="0.5" layoutY="40.0" orientation="VERTICAL" prefHeight="508.0" prefWidth="801.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane fx:id="splitTop" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
