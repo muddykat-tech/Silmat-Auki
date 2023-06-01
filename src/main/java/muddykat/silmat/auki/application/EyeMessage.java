@@ -15,10 +15,7 @@ import muddykat.silmat.auki.EyeApplication;
 import muddykat.silmat.auki.EyeController;
 import muddykat.silmat.auki.util.EyeUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import static muddykat.silmat.auki.util.EyeUtil.getResource;
 
@@ -55,12 +52,38 @@ public class EyeMessage {
             ArrayList<Integer> line = this.data.get(lineIndex);
             for (int symbolIndex = 0; symbolIndex < line.size(); symbolIndex++) {
                 Integer symbol = line.get(symbolIndex);
+
+                if(trigrams.isSelected()) {
+                    if (symbolIndex < line.size() * 0.66) {
+                        if (lineIndex < (this.data.size() * 0.5)) {
+                            ImageView trigram = new ImageView(new Image(getResource(EyeApplication.class, "util/trigram-selector.png")));
+                            trigram.setLayoutX(posX);
+                            trigram.setLayoutY(posY);
+                            trigram.setX(2 + (symbolIndex * 23) + (symbolIndex * 13));
+                            trigram.setY(2 + lineIndex * 32);
+                            trigram.setScaleX(1);
+                            trigram.setScaleY(symbolIndex % 2 == 1 ? 1 : -1);
+                            ColorAdjust colorAdjust = new ColorAdjust();
+                            ArrayList<Color> colors = new ArrayList<>();
+                            colors.add(Color.RED);
+                            colors.add(Color.BLUE);
+                            colors.add(Color.GREEN);
+                            colors.add(Color.YELLOW);
+                            colors.add(Color.DARKORANGE);
+                            colors.add(Color.AQUA);
+                            Color color = colors.get((symbolIndex + lineIndex) % colors.size());
+                            colorAdjust.setHue(color.getHue() / 180);
+                            colorAdjust.setSaturation(-1 + (color.getSaturation() * 2));
+
+                            trigram.setEffect(colorAdjust);
+
+                            displayPane.getChildren().add(trigram);
+                        }
+                    }
+                }
+
                 ImageView view = new ImageView(EyeUtil.getImageFromIndex(symbol));
-
-
-
                 int xoffset = (symbolIndex * 24) + (lineIndex % 2 == 1 ? 12 : 0);
-
                 view.setLayoutX(posX);
                 view.setLayoutY(posY);
                 view.setX(xoffset);
@@ -70,21 +93,7 @@ public class EyeMessage {
                 view.setEffect(colorAdjust);
                 displayPane.getChildren().add(view);
 
-                if(trigrams.isSelected()) {
-//                    if (symbolIndex < line.size() * 0.66) {
-//                        if (lineIndex < (this.data.size() * 0.5)) {
-//                            ImageView trigram = new ImageView(new Image(getResource(EyeApplication.class, "util/trigram-selector.png")));
-//                            trigram.setLayoutX(posX);
-//                            trigram.setLayoutY(posY);
-//                            trigram.setX(12 + (symbolIndex * 23) + (symbolIndex * 13));
-//                            trigram.setY(8 + lineIndex * 32);
-//                            trigram.setScaleX(2);
-//                            trigram.setScaleY(symbolIndex % 2 == 1 ? 2 : -2);
-//
-//                            displayPane.getChildren().add(trigram);
-//                        }
-//                    }
-                }
+
             }
         }
     }
