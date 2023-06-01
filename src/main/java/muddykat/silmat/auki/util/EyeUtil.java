@@ -15,6 +15,7 @@ public class EyeUtil {
         new EyeUtil();
     }
     public EyeUtil(){
+        eyeMap.put(6, new Image(getResource(getClass(), "eye_empty.png")));
         eyeMap.put(0, new Image(getResource(getClass(), "eye_0.png")));
         eyeMap.put(1, new Image(getResource(getClass(), "eye_1.png")));
         eyeMap.put(2, new Image(getResource(getClass(), "eye_2.png")));

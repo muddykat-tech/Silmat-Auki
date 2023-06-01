@@ -2,6 +2,7 @@ package muddykat.silmat.auki;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -12,6 +13,11 @@ import muddykat.silmat.auki.modules.CipherModule;
 import muddykat.silmat.auki.util.EyeMode;
 
 import java.math.MathContext;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static muddykat.silmat.auki.util.EyeUtil.getResource;
 
 public class EyeController {
 
@@ -53,6 +59,9 @@ public class EyeController {
     Button homomorphicOperation;
 
     @FXML
+    CheckBox chkOnlyMode;
+
+    @FXML
     public void switchToOperation() {
         EyeApplication.selectedMode = EyeMode.OPERATION;
         try {
@@ -85,6 +94,7 @@ public class EyeController {
         setupOverlayMode();
         setupEyeSelection();
         setupDragDrop();
+        setupTrigrams();
     }
 
     private double posX = 0.0;
@@ -116,11 +126,32 @@ public class EyeController {
             MenuItem messageItem = new MenuItem(e.name());
 
             messageItem.setOnAction(event -> {
+                String rawText = e.getMessage().getRawString();
                 if(!overlayMode) {
                     splitBottom.getChildren().clear();
+                } else if (chkOnlyMode.isSelected()) {
+                    char[] oldData = eyeRawText.getText().replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "").toCharArray();
+                    char[] newData = e.getMessage().getRawString().replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "").toCharArray();
+                    char[] structuredData = new char[Math.max(eyeRawText.getText().length(), e.getMessage().getRawString().length())];
+
+                    for(int i = 0; i < structuredData.length; i++) {
+                        if (oldData.length > i && newData.length > i) {
+                            structuredData[i] = (oldData[i] == newData[i] ? newData[i] : '6');
+                        } else {
+                            structuredData[i] = '6';
+                        }
+                    }
+                    rawText = new String(structuredData);
+                    System.out.println("oldData: " + new String(oldData));
+                    System.out.println("newData: " + new String(newData));
+                    System.out.println("structuredData: " + new String(structuredData));
+
                 }
-                eyeRawText.setText(e.getMessage().getRawString());
-                e.getMessage().setDisplayPane(splitBottom, posX, posY);
+
+
+                EyeMessage custom = new EyeMessage(rawText.replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", ""));
+                eyeRawText.setText(custom.getRawString());
+                custom.setDisplayPane(splitBottom, posX, posY, trigrams);
                 eyeMessageOptions.setText("Selected: " + e.name());
             });
 
@@ -128,13 +159,13 @@ public class EyeController {
         }
 
         updateEyeGraphics.setOnAction(event -> {
-            if(!overlayMode) {
+            if(!overlayMode || chkOnlyMode.isSelected()) {
                 splitBottom.getChildren().clear();
             }
             eyeMessageOptions.setText("Selected: CUSTOM");
             String rawText = eyeRawText.getText().replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "");
             EyeMessage custom = new EyeMessage(rawText);
-            custom.setDisplayPane(splitBottom, posX, posY);
+            custom.setDisplayPane(splitBottom, posX, posY, trigrams);
         });
     }
 
@@ -142,7 +173,7 @@ public class EyeController {
         overlayEyes.setOnAction(event -> {
             overlayMode = overlayEyes.isSelected();
             if (!overlayEyes.isSelected()){
-                if(displayGrid.getChildren() != null)
+                if(displayGrid != null && displayGrid.getChildren() != null)
                     displayGrid.getChildren().clear();
             }
         });
@@ -156,7 +187,114 @@ public class EyeController {
         });
     }
 
-    private void setupTrigrams(){
-
+    public void setupTrigrams(){
+        trigrams.setOnAction(event -> {
+            updateTrigrams();
+        });
     }
+
+    public void updateTrigrams(){
+        ArrayList<ArrayList<String>> trigrams = extractTrigrams(eyeRawText.getText());
+
+        StringBuilder trigramData = new StringBuilder();
+
+        for (ArrayList<String> line : trigrams) {
+            trigramData.append(line.toString() + "\n");
+        }
+
+        outputTextPane.setText(trigramData.toString());
+    }
+
+    public static ArrayList<ArrayList<String>> extractTrigrams(String rawData) {
+
+        ArrayList<String> lineData = processRawData(rawData);
+
+        ArrayList<ArrayList<String>> trigrams = new ArrayList<>();
+
+        for(int i = 0; i < lineData.size(); i++) {
+            trigrams.add(findTrigramInLineData(lineData.get(i)));
+        }
+
+        return trigrams;
+    }
+
+    private static ArrayList<String> findTrigramInLineData(String s) {
+
+        String[] lines = s.split("\n");
+
+        ArrayList<String> primitiveTrigrams = new ArrayList<>();
+        ArrayList<String> line1 = formatLine(lines[0], true);
+        ArrayList<String> line2 = formatLine(lines[1], false);
+        for(int i = 0; i < line1.size(); i++){
+            primitiveTrigrams.add(createTrigram(line1.get(i), line2.get(i)));
+        }
+
+        return primitiveTrigrams;
+    }
+
+    private static ArrayList<String> processRawData(String rawData) {
+        String data = rawData.replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "");
+        StringBuilder output = new StringBuilder(data);
+        int count = 0;
+        int index = output.indexOf("5");
+        while (index != -1) {
+            count++;
+            if (count % 2 == 0) {
+                output.replace(index, index + 1, "\n\n");
+            }
+            index = output.indexOf("5", index + 1);
+        }
+        String modified = output.toString().replaceAll("5","\n");
+        ArrayList<String> lines = new ArrayList<>();
+        String[] splitLines = modified.split("\n\n");
+
+        for (String line : splitLines) {
+            if (!line.isEmpty()) {
+                lines.add(line);
+            }
+        }
+
+        return lines;
+    }
+
+    private static ArrayList<String> formatLine(String input, boolean flag) {
+        ArrayList<String> substrings = new ArrayList<>();
+        int length = input.length();
+        int index = 0;
+
+        while (index < length) {
+            int substringLength = flag ? 2 : 1;
+            if (index + substringLength <= length) {
+                substrings.add(input.substring(index, index + substringLength));
+                index += substringLength;
+                flag = !flag;
+            } else {
+                substrings.add(input.substring(index));
+                break;
+            }
+        }
+
+        return substrings;
+    }
+
+    public static String createTrigram(String topLine, String botLine) {
+        StringBuilder result = new StringBuilder();
+
+        if(topLine.length() == 2){
+            result.append(topLine);
+            result.append(botLine);
+        } else if(botLine.length() == 2){
+            ArrayList<Character> bottomLine = new ArrayList<>();
+            for (char c : botLine.toCharArray()) {
+                bottomLine.add(c);
+            }
+            Collections.reverse(bottomLine);
+            result.append(bottomLine.get(0));
+            result.append(bottomLine.get(1));
+            result.append(topLine);
+        }
+
+        return result.toString();
+    }
+
 }

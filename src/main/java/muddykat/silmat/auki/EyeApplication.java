@@ -33,6 +33,7 @@ public class EyeApplication extends Application {
         primaryStage = stage;
     }
 
+    public static Image trigramImage;
     private static Stage primaryStage;
 
     public static EyeMode selectedMode = EyeMode.BASE;
