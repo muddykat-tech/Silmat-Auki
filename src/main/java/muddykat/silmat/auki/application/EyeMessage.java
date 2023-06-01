@@ -67,12 +67,6 @@ public class EyeMessage {
                 view.setY(lineIndex * 16);
                 ColorAdjust colorAdjust = new ColorAdjust();
                 colorAdjust.setBrightness(-1.0);
-                if(trigrams.isSelected()) {
-                    colorAdjust.setBrightness(0);
-                    colorAdjust.setHue(Color.RED.getHue()) ;
-                    colorAdjust.setSaturation(Color.RED.getSaturation());
-                }
-
                 view.setEffect(colorAdjust);
                 displayPane.getChildren().add(view);
 

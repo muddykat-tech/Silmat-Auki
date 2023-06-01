@@ -2,10 +2,12 @@ package muddykat.silmat.auki;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import muddykat.silmat.auki.application.EyeMessage;
 import muddykat.silmat.auki.application.EyeMessages;
@@ -153,6 +155,7 @@ public class EyeController {
                 eyeRawText.setText(custom.getRawString());
                 custom.setDisplayPane(splitBottom, posX, posY, trigrams);
                 eyeMessageOptions.setText("Selected: " + e.name());
+                if(trigrams.isSelected()) updateTrigrams();
             });
 
             eyeMessageOptions.getItems().add(messageItem);
@@ -162,10 +165,10 @@ public class EyeController {
             if(!overlayMode || chkOnlyMode.isSelected()) {
                 splitBottom.getChildren().clear();
             }
-            eyeMessageOptions.setText("Selected: CUSTOM");
             String rawText = eyeRawText.getText().replaceAll("\n", "5").replaceAll("[^\\d.]", "").replaceAll(" ", "");
             EyeMessage custom = new EyeMessage(rawText);
             custom.setDisplayPane(splitBottom, posX, posY, trigrams);
+            if(trigrams.isSelected()) updateTrigrams();
         });
     }
 
@@ -205,7 +208,7 @@ public class EyeController {
         outputTextPane.setText(trigramData.toString());
     }
 
-    public static ArrayList<ArrayList<String>> extractTrigrams(String rawData) {
+    public ArrayList<ArrayList<String>> extractTrigrams(String rawData) {
 
         ArrayList<String> lineData = processRawData(rawData);
 
@@ -218,7 +221,7 @@ public class EyeController {
         return trigrams;
     }
 
-    private static ArrayList<String> findTrigramInLineData(String s) {
+    private ArrayList<String> findTrigramInLineData(String s) {
 
         String[] lines = s.split("\n");
 
