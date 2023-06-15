@@ -25,7 +25,7 @@ public class SelectionView {
         btnModeSelection.setSpacing(10.0);
         for (ApplicationMode mode : ApplicationMode.values()) {
             if(!mode.equals(ApplicationMode.selected)) {
-                Button item = new Button(mode.name());
+                Button item = new Button(mode.name().substring(0,1).toUpperCase() + mode.name().substring(1) + " Analysis");
                 item.setMinWidth(100);
                 item.setPadding(new Insets(10,10,10,10));
                 item.setOnAction(e -> {
