@@ -120,6 +120,24 @@ public class EyeData {
 
         return new String(characters);
     }
+    
+    public static String cycleString(String input, int cycles) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        int length = input.length();
+        cycles = cycles % length; // handle cases where cycles is greater than the length of the string
+
+        if (cycles < 0) {
+            cycles = length + cycles; // handle negative cycles
+        }
+
+        // Perform the cycle operation
+        String rotated = input.substring(length - cycles) + input.substring(0, length - cycles);
+
+        return rotated;
+    }
 
     public String getName() {
         return message;

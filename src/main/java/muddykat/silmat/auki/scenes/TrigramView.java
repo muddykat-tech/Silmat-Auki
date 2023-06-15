@@ -27,7 +27,7 @@ public class TrigramView {
     private TextArea dataA, dataB;
 
     @FXML
-    private RadioButton dataASelector, dataBSelector, rbtnRawMsg, rbtnRawTrigram, rbtnTrigram;
+    private RadioButton dataASelector, dataBSelector, rbtnRawMsg, rbtnRawTrigram, rbtnTrigram, rbtnTrigramAscii;
 
     @FXML
     private ToggleButton btnLinkFields;
@@ -37,6 +37,7 @@ public class TrigramView {
 
     public static TrigramReadMode selectedMode = TrigramReadMode.acb;
     public static EyeData selectedMessageData;
+    public static EyeData oldSelectedMessageData;
 
     private DataForm dataAform = DataForm.rawMsg;
     private DataForm dataBform = DataForm.rawMsg;
@@ -49,20 +50,29 @@ public class TrigramView {
                     case rawTrigram -> {
                         rbtnRawMsg.setSelected(false);
                         rbtnTrigram.setSelected(false);
+                        rbtnTrigramAscii.setSelected(false);
                         rbtnRawTrigram.setSelected(true);
                     }
                     case rawMsg -> {
                         rbtnRawMsg.setSelected(true);
                         rbtnTrigram.setSelected(false);
+                        rbtnTrigramAscii.setSelected(false);
                         rbtnRawTrigram.setSelected(false);
                     }
                     case trigramValue -> {
                         rbtnRawMsg.setSelected(false);
                         rbtnTrigram.setSelected(true);
+                        rbtnTrigramAscii.setSelected(false);
+                        rbtnRawTrigram.setSelected(false);
+                    }
+                    case trigramAscii-> {
+                        rbtnRawMsg.setSelected(false);
+                        rbtnTrigram.setSelected(false);
+                        rbtnTrigramAscii.setSelected(true);
                         rbtnRawTrigram.setSelected(false);
                     }
                 }
-
+                selectedMessageData = parseTextData(dataA.getText(), dataAform);
                 updateEyeDisplay();
             }
         });
@@ -74,20 +84,29 @@ public class TrigramView {
                     case rawTrigram -> {
                         rbtnRawMsg.setSelected(false);
                         rbtnTrigram.setSelected(false);
+                        rbtnTrigramAscii.setSelected(false);
                         rbtnRawTrigram.setSelected(true);
                     }
                     case rawMsg -> {
                         rbtnRawMsg.setSelected(true);
                         rbtnTrigram.setSelected(false);
+                        rbtnTrigramAscii.setSelected(false);
                         rbtnRawTrigram.setSelected(false);
                     }
                     case trigramValue -> {
                         rbtnRawMsg.setSelected(false);
                         rbtnTrigram.setSelected(true);
+                        rbtnTrigramAscii.setSelected(false);
+                        rbtnRawTrigram.setSelected(false);
+                    }
+                    case trigramAscii-> {
+                        rbtnRawMsg.setSelected(false);
+                        rbtnTrigram.setSelected(false);
+                        rbtnTrigramAscii.setSelected(true);
                         rbtnRawTrigram.setSelected(false);
                     }
                 }
-
+                selectedMessageData = parseTextData(dataB.getText(), dataBform);
                 updateEyeDisplay();
             }
         });
@@ -95,16 +114,26 @@ public class TrigramView {
         rbtnRawMsg.setOnAction(e -> {
             if(rbtnRawTrigram.isSelected()) rbtnRawTrigram.setSelected(false);
             if(rbtnTrigram.isSelected()) rbtnTrigram.setSelected(false);
+            if(rbtnTrigramAscii.isSelected()) rbtnTrigramAscii.setSelected(false);
             btnImportMessage.fire();
         });
         rbtnRawTrigram.setOnAction(e -> {
             if(rbtnRawMsg.isSelected()) rbtnRawMsg.setSelected(false);
             if(rbtnTrigram.isSelected()) rbtnTrigram.setSelected(false);
+            if(rbtnTrigramAscii.isSelected()) rbtnTrigramAscii.setSelected(false);
             btnImportMessage.fire();
         });
         rbtnTrigram.setOnAction(e -> {
             if(rbtnRawMsg.isSelected()) rbtnRawMsg.setSelected(false);
             if(rbtnRawTrigram.isSelected()) rbtnRawTrigram.setSelected(false);
+            if(rbtnTrigramAscii.isSelected()) rbtnTrigramAscii.setSelected(false);
+            btnImportMessage.fire();
+        });
+
+        rbtnTrigramAscii.setOnAction(e -> {
+            if(rbtnRawMsg.isSelected()) rbtnRawMsg.setSelected(false);
+            if(rbtnRawTrigram.isSelected()) rbtnRawTrigram.setSelected(false);
+            if(rbtnTrigram.isSelected()) rbtnTrigram.setSelected(false);
             btnImportMessage.fire();
         });
 
@@ -169,6 +198,17 @@ public class TrigramView {
                         dataBSelector.setText("Data B: Raw Message");
                     }
                 }
+                if(rbtnTrigramAscii.isSelected()){
+                    selectedTextArea.setText(convertDecimalToAscii(selectedMessageData.getTrigramValues()));
+                    if(dataASelector.isSelected()) {
+                        dataAform = DataForm.trigramAscii;
+                        dataASelector.setText("Data A: Trigram Ascii");
+                    }
+                    if(dataBSelector.isSelected()) {
+                        dataBform = DataForm.trigramAscii;
+                        dataBSelector.setText("Data B: Trigram Ascii");
+                    }
+                }
                 updateEyeDisplay();
             }
         });
@@ -178,6 +218,48 @@ public class TrigramView {
         primaryData = primaryData.trim();
         String[] rawMsg = null;
         switch (form) {
+            case trigramAscii -> {
+                primaryData = convertAsciiToDecimal(primaryData);
+                String[] lines = primaryData.split("\n");
+                String[] rawMessageLines = new String[lines.length*2];
+
+                StringBuilder rawLine = new StringBuilder();
+                StringBuilder rawLine1 = new StringBuilder();
+                StringBuilder rawLine2 = new StringBuilder();
+
+                for(int l = 0;  l < lines.length; l++) {
+                    String line = lines[l];
+                    String[] values = line.split(",");
+                    for(int i = 0; i < values.length; i++) {
+                        StringBuilder scrambledRawTrigram = new StringBuilder(Integer.toString(Integer.parseInt(values[i], 10), 5));
+                        while(scrambledRawTrigram.length() < 3) {
+                            scrambledRawTrigram.insert(0, "0");
+                        }
+
+                        String rawTrigram = selectedMode.convertToRaw(scrambledRawTrigram.charAt(0), scrambledRawTrigram.charAt(1), scrambledRawTrigram.charAt(2));
+                        String abcTrigram = i % 2 == 0 ? rawTrigram : EyeData.reverseString(rawTrigram);
+
+                        char[] trigramparts = abcTrigram.trim().toCharArray();
+                        for(int v = 0; v < trigramparts.length; v++) {
+                            rawLine.append(trigramparts[v]);
+                        }
+                    }
+                    char[] rawlinecharacters = rawLine.toString().toCharArray();
+                    for (int i = 0; i < rawlinecharacters.length; i++) {
+                        if(i % 2 == 0) {
+                            rawLine1.append(String.valueOf(rawlinecharacters[i]));
+                        } else {
+                            rawLine2.append(String.valueOf(rawlinecharacters[i]));
+                        }
+                    }
+                    rawMessageLines[l * 2] = rawLine1.toString();
+                    rawMessageLines[1 + (l * 2)] = rawLine2.toString();
+                    rawLine = new StringBuilder();
+                    rawLine1 = new StringBuilder();
+                    rawLine2 = new StringBuilder();
+                }
+                rawMsg = rawMessageLines;
+            }
             case trigramValue -> {
                 String[] lines = primaryData.split("\n");
                 String[] rawMessageLines = new String[lines.length*2];
@@ -266,6 +348,37 @@ public class TrigramView {
         return new EyeData("custom", rawMsg);
     }
 
+    private String convertDecimalToAscii(String primaryData) {
+        StringBuilder newData = new StringBuilder();
+
+        String[] lines = primaryData.split("\n");
+        for(int i = 0; i < lines.length; i++) {
+            String[] values = lines[i].split(",");
+            for (String value : values) {
+                newData.append((char) (Integer.parseInt(value) + 32));
+            }
+            newData.append("\n");
+        }
+
+        return newData.toString();
+    }
+
+    private String convertAsciiToDecimal(String primaryData) {
+        StringBuilder newData = new StringBuilder();
+
+        String[] lines = primaryData.split("\n");
+        for(int i = 0; i < lines.length; i++) {
+            char[] values = lines[i].toCharArray();
+            for (char value : values) {
+                newData.append(Character.valueOf(value) - 32);
+                newData.append(",");    // Needed to ensure proper decoding later.
+            }
+            newData.append("\n");
+        }
+
+        return newData.toString();
+    }
+
     @FXML
     public void onPressedBack(){
         ApplicationControl.setMode(ApplicationMode.selection);
@@ -273,22 +386,39 @@ public class TrigramView {
 
     @FXML
     public void updateDataAForm(){
+        selectedMessageData = parseTextData(dataA.getText(), dataAform);
+        btnSelectedEyeData.setText("Message: MODIFIED");
         if(btnLinkFields.isSelected()) {
-            selectedMessageData = parseTextData(dataA.getText(), dataAform);
-            btnSelectedEyeData.setText("Message: MODIFIED");
             switch (dataBform){
                 case rawTrigram -> dataB.setText(selectedMessageData.getRawTrigramData());
                 case rawMsg -> dataB.setText(selectedMessageData.getRawEyeData());
                 case trigramValue -> dataB.setText(selectedMessageData.getTrigramValues());
+                case trigramAscii -> dataB.setText(convertDecimalToAscii(selectedMessageData.getTrigramValues()));
             };
-            updateEyeDisplay();
         }
+        updateEyeDisplay();
+    }
+
+    @FXML
+    public void updateDataBForm(){
+        selectedMessageData = parseTextData(dataB.getText(), dataBform);
+        btnSelectedEyeData.setText("Message: MODIFIED");
+        if(btnLinkFields.isSelected()) {
+            switch (dataAform){
+                case rawTrigram -> dataA.setText(selectedMessageData.getRawTrigramData());
+                case rawMsg -> dataA.setText(selectedMessageData.getRawEyeData());
+                case trigramValue -> dataA.setText(selectedMessageData.getTrigramValues());
+                case trigramAscii -> dataA.setText(convertDecimalToAscii(selectedMessageData.getTrigramValues()));
+            };
+        }
+        updateEyeDisplay();
     }
 
     enum DataForm {
         trigramValue,
         rawTrigram,
-        rawMsg
+        rawMsg,
+        trigramAscii
     }
 
 
