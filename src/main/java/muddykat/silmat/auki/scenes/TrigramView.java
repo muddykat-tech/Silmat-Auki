@@ -21,7 +21,7 @@ public class TrigramView {
     Button btnImportMessage;
 
     @FXML
-    private Text txtSelectedReadingMode;
+    private Text txtSelectedReadingMode, txtDisplayData;
 
     @FXML
     private TextArea dataA, dataB;
@@ -45,6 +45,7 @@ public class TrigramView {
     public void initialize(){
         dataASelector.setOnAction(e -> {
             if(dataBSelector.isSelected()) {
+                txtDisplayData.setText("Displaying: Data A");
                 dataBSelector.setSelected(false);
                 switch(dataAform){
                     case rawTrigram -> {
@@ -79,6 +80,7 @@ public class TrigramView {
 
         dataBSelector.setOnAction(e -> {
             if(dataASelector.isSelected()) {
+                txtDisplayData.setText("Displaying: Data B");
                 dataASelector.setSelected(false);
                 switch(dataBform){
                     case rawTrigram -> {
@@ -115,26 +117,26 @@ public class TrigramView {
             if(rbtnRawTrigram.isSelected()) rbtnRawTrigram.setSelected(false);
             if(rbtnTrigram.isSelected()) rbtnTrigram.setSelected(false);
             if(rbtnTrigramAscii.isSelected()) rbtnTrigramAscii.setSelected(false);
-            btnImportMessage.fire();
+            importData();
         });
         rbtnRawTrigram.setOnAction(e -> {
             if(rbtnRawMsg.isSelected()) rbtnRawMsg.setSelected(false);
             if(rbtnTrigram.isSelected()) rbtnTrigram.setSelected(false);
             if(rbtnTrigramAscii.isSelected()) rbtnTrigramAscii.setSelected(false);
-            btnImportMessage.fire();
+            importData();
         });
         rbtnTrigram.setOnAction(e -> {
             if(rbtnRawMsg.isSelected()) rbtnRawMsg.setSelected(false);
             if(rbtnRawTrigram.isSelected()) rbtnRawTrigram.setSelected(false);
             if(rbtnTrigramAscii.isSelected()) rbtnTrigramAscii.setSelected(false);
-            btnImportMessage.fire();
+            importData();
         });
 
         rbtnTrigramAscii.setOnAction(e -> {
             if(rbtnRawMsg.isSelected()) rbtnRawMsg.setSelected(false);
             if(rbtnRawTrigram.isSelected()) rbtnRawTrigram.setSelected(false);
             if(rbtnTrigram.isSelected()) rbtnTrigram.setSelected(false);
-            btnImportMessage.fire();
+            importData();
         });
 
 
@@ -144,7 +146,7 @@ public class TrigramView {
             {
                 txtSelectedReadingMode.setText("Method: " + mode.name());
                 selectedMode = mode;
-                btnImportMessage.fire();
+                importData();
                 updateEyeDisplay();
             });
 
@@ -157,63 +159,63 @@ public class TrigramView {
                 btnSelectedEyeData.setText("Message: " + message.getName());
                 selectedMessageData = message.getData();
                 updateEyeDisplay();
-                btnImportMessage.fire();
+                importData();
             });
             btnSelectedEyeData.getItems().add(item);
         }
-
-        btnImportMessage.setOnAction(e -> {
-            if(selectedMessageData != null){
-                TextArea selectedTextArea = dataASelector.isSelected() ? dataA : dataB;
-                if(rbtnTrigram.isSelected()){
-                    selectedTextArea.setText(selectedMessageData.getTrigramValues());
-                    if(dataASelector.isSelected()) {
-                        dataAform = DataForm.trigramValue;
-                        dataASelector.setText("Data A: Trigram Value");
-                    }
-                    if(dataBSelector.isSelected()) {
-                        dataBform = DataForm.trigramValue;
-                        dataBSelector.setText("Data B: Trigram Value");
-                    }
-                }
-                if(rbtnRawTrigram.isSelected()){
-                    selectedTextArea.setText(selectedMessageData.getRawTrigramData());
-                    if(dataASelector.isSelected()) {
-                        dataAform = DataForm.rawTrigram;
-                        dataASelector.setText("Data A: Raw Trigrams");
-                    }
-                    if(dataBSelector.isSelected()) {
-                        dataBform = DataForm.rawTrigram;
-                        dataBSelector.setText("Data B: Raw Trigrams");
-                    }
-                }
-                if(rbtnRawMsg.isSelected()){
-                    selectedTextArea.setText(selectedMessageData.getRawEyeData());
-                    if(dataASelector.isSelected()) {
-                        dataAform = DataForm.rawMsg;
-                        dataASelector.setText("Data A: Raw Message");
-                    }
-                    if(dataBSelector.isSelected()) {
-                        dataBform = DataForm.rawMsg;
-                        dataBSelector.setText("Data B: Raw Message");
-                    }
-                }
-                if(rbtnTrigramAscii.isSelected()){
-                    selectedTextArea.setText(convertDecimalToAscii(selectedMessageData.getTrigramValues()));
-                    if(dataASelector.isSelected()) {
-                        dataAform = DataForm.trigramAscii;
-                        dataASelector.setText("Data A: Trigram Ascii");
-                    }
-                    if(dataBSelector.isSelected()) {
-                        dataBform = DataForm.trigramAscii;
-                        dataBSelector.setText("Data B: Trigram Ascii");
-                    }
-                }
-                updateEyeDisplay();
-            }
-        });
     }
 
+    private void importData(){
+        if(selectedMessageData != null){
+            TextArea selectedTextArea = dataASelector.isSelected() ? dataA : dataB;
+            if(rbtnTrigram.isSelected()){
+                selectedTextArea.setText(selectedMessageData.getTrigramValues());
+                if(dataASelector.isSelected()) {
+                    dataAform = DataForm.trigramValue;
+                    dataASelector.setText("Data A: Trigram Value");
+                }
+                if(dataBSelector.isSelected()) {
+                    dataBform = DataForm.trigramValue;
+                    dataBSelector.setText("Data B: Trigram Value");
+                }
+            }
+            if(rbtnRawTrigram.isSelected()){
+                selectedTextArea.setText(selectedMessageData.getRawTrigramData());
+                if(dataASelector.isSelected()) {
+                    dataAform = DataForm.rawTrigram;
+                    dataASelector.setText("Data A: Raw Trigrams");
+                }
+                if(dataBSelector.isSelected()) {
+                    dataBform = DataForm.rawTrigram;
+                    dataBSelector.setText("Data B: Raw Trigrams");
+                }
+            }
+            if(rbtnRawMsg.isSelected()){
+                selectedTextArea.setText(selectedMessageData.getRawEyeData());
+                if(dataASelector.isSelected()) {
+                    dataAform = DataForm.rawMsg;
+                    dataASelector.setText("Data A: Raw Message");
+                }
+                if(dataBSelector.isSelected()) {
+                    dataBform = DataForm.rawMsg;
+                    dataBSelector.setText("Data B: Raw Message");
+                }
+            }
+            if(rbtnTrigramAscii.isSelected()){
+                selectedTextArea.setText(convertDecimalToAscii(selectedMessageData.getTrigramValues()));
+                if(dataASelector.isSelected()) {
+                    dataAform = DataForm.trigramAscii;
+                    dataASelector.setText("Data A: Trigram Ascii");
+                }
+                if(dataBSelector.isSelected()) {
+                    dataBform = DataForm.trigramAscii;
+                    dataBSelector.setText("Data B: Trigram Ascii");
+                }
+            }
+            updateEyeDisplay();
+        }
+    }
+    
     private EyeData parseTextData(String primaryData, DataForm form) {
         primaryData = primaryData.trim();
         String[] rawMsg = null;
@@ -348,7 +350,7 @@ public class TrigramView {
         return new EyeData("custom", rawMsg);
     }
 
-    private String convertDecimalToAscii(String primaryData) {
+    public static String convertDecimalToAscii(String primaryData) {
         StringBuilder newData = new StringBuilder();
 
         String[] lines = primaryData.split("\n");

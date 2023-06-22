@@ -59,10 +59,9 @@ public class ApplicationControl extends Application {
         reload();
     }
 
-
     static {
         stageMap.put(ApplicationMode.selection, "scenes/selection-view.fxml");
-        //stageMap.put(ApplicationMode.basic, "scenes/basic-view.fxml");
+        stageMap.put(ApplicationMode.isomorph, "scenes/isomorph-view.fxml");
         stageMap.put(ApplicationMode.trigram, "scenes/trigram-view.fxml");
 
         icon = new Image(getResource(ApplicationControl.class, "images/icon.png"));

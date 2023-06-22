@@ -2,7 +2,7 @@ package muddykat.silmat.auki.utility;
 
 public enum ApplicationMode {
     selection,
-    trigram;
+    trigram, isomorph;
 
     public static ApplicationMode selected;
 
