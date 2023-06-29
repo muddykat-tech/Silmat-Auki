@@ -4,10 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import muddykat.silmat.auki.ApplicationControl;
 import muddykat.silmat.auki.eyes.EyeMessages;
@@ -23,7 +20,13 @@ public class IsomorphView {
     @FXML
     MenuButton btnDataType;
 
-    GridPane gridEyeData = new GridPane();
+    @FXML
+    VBox vboxPairs;
+
+    @FXML
+    Button btnAddPair;
+
+    public static GridPane gridEyeData = new GridPane();
 
     private CheckMenuItem activeSelection;
 
@@ -37,7 +40,10 @@ public class IsomorphView {
             item.setOnAction(e -> {
                 activeSelection = item;
                 dataForm = data;
+                gridEyeData.setGridLinesVisible(false); // needed for some arcane reason
                 fillGrid();
+                resizeGrid();
+                gridEyeData.setGridLinesVisible(true);
             });
             btnDataType.getItems().add(item);
         }
@@ -51,8 +57,8 @@ public class IsomorphView {
                 }
             });
         });
-
         fillGrid();
+        gridEyeData.setGridLinesVisible(true);
     }
 
     private void fillGrid() {
@@ -130,7 +136,7 @@ public class IsomorphView {
             gridEyeData.getRowConstraints().add(rowConstraints);
         }
 
-        for(int i = 0; i < 150; i++) {
+        for(int i = 0; i < 500; i++) {
             gridEyeData.getColumnConstraints().add(columnConstraints);
         }
 
