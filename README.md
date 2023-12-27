@@ -1,5 +1,5 @@
 # Welcome to the Silmat-Auki!
-Designed to assist in decrypting the mysterious eye message in the game Notia!
+Designed to assist in decrypting the mysterious eye messages in the game Notia!
 
 ![Eye Message (East 1)](https://github.com/Muddykat-tech/Silmat-Auki/assets/17131200/1bc03f89-55ba-47f0-b62e-19ce9d741048)
 
